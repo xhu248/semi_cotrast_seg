@@ -1,0 +1,25 @@
+batch_size: 160
+val_batch_size: 100
+epochs: 10
+base_dir: "data/mmwhs/"
+save_dir: "save/simclr/mmwhs"
+eval_every_n_epochs: 1
+fine_tune_from: None
+log_every_n_steps: 10
+weight_decay: 10e-6
+fp16_precision: False
+img_size: 160
+model:
+  out_dim: 256
+  embed_dim: 512
+  base_model: "resnet18"
+
+dataset:
+  s: 1
+  input_shape: (112,112,3)
+  num_workers: 0
+  valid_size: 0.01
+
+loss:
+  temperature: 0.5
+  use_cosine_similarity: True
