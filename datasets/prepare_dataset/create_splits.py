@@ -73,4 +73,9 @@ def create_splits_1(output_dir, image_dir, test_dir):
         pickle.dump(splits, f)
 
 
-# divide the processed .npy data into three parts, and do it four times
+if __name__ == "__main__":
+    root_dir = "../../data/Hippocampus"
+    image_dir = "../../data/Hippocampus/preprocessed"
+    create_splits(root_dir, image_dir)
+
+
