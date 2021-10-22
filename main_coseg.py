@@ -87,6 +87,15 @@ def parse_option():
     parser.add_argument('--temp', type=float, default=0.07,
                         help='temperature for loss function')
 
+    # other setting
+    parser.add_argument('--cosine', action='store_true',
+                        help='using cosine annealing')
+    parser.add_argument('--syncBN', action='store_true',
+                        help='using synchronized batch normalization')
+    parser.add_argument('--warm', action='store_true',
+                        help='warm-up for large batch training')
+    parser.add_argument('--trial', type=str, default='0',
+                        help='id for recording multiple runs')
 
     opt = parser.parse_args()
 
