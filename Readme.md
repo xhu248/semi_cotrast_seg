@@ -9,6 +9,7 @@ Label-efficient Medical Image Segmentation".
 python=3.7.10
 torch==1.8.1
 torchvision=0.9.1
+batchgenerator=0.21
 ```
 ### Dataset
 We will take the [Hippocampus dataset](https://drive.google.com/file/d/1RzPB1_bqzQhlWvU-YGvZzhx2omcDh38C/view?usp=sharing)
