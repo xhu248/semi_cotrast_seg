@@ -3,14 +3,14 @@ This is the pytorch implementation of paper "Semi-supervised Contrastive Learnin
 Label-efficient Medical Image Segmentation".
 ![workflow of our methods](./workflow.png)
 
-##Setup
-###Environment
+## Setup
+### Environment
 ```
 python=3.7.10
 torch==1.8.1
 torchvision=0.9.1
 ```
-###Dataset
+### Dataset
 We will take the [Hippocampus dataset](https://drive.google.com/file/d/1RzPB1_bqzQhlWvU-YGvZzhx2omcDh38C/view?usp=sharing)
  as the example to illustrate how 
 to do the preprocessing. Put the images .nii.gz files in ./data/Hippocampus/imgs folder and labels files in 
@@ -22,7 +22,7 @@ python create_splits.py
 ```
 After which,the images and labels will be restored together in .npy file with shape normalized to target size.
 
-##Run the codes
+## Run the codes
 To run the global pretraining. Thie part is mainly based on the repository [PyTorch SimCLR: A Simple Framework for 
 Contrastive Learning of Visual Representations](https://github.com/sthalles/SimCLR/blob/master/README.md)
 ```
