@@ -201,7 +201,6 @@ def set_model(opt):
             print("model state dict:", model.state_dict().keys())
             print("loaded pretrained model:", opt.pretrained_model_path)
 
-
     return model, criterion
 
 
@@ -257,29 +256,8 @@ def train(train_loader, model, criterion, logger, optimizer, epoch, opt):
         features = torch.cat([f1.unsqueeze(1), f2.unsqueeze(1)], dim=1)  # [bsz, n_view, c, img_size, img_size]
         l1, l2 = torch.split(labels, [bsz, bsz], dim=0)
         labels = torch.cat([l1.unsqueeze(1), l2.unsqueeze(1)], dim=1)
-        # print(idx, features.device, labels.device)
-        loss = criterion(features)
-
-
-        """
-        # compute loss
-        inf_time = time.time()
-        features = model(imgs)  # of shape [2b, c, 512, 512]
-        features = F.normalize(features, p=2, dim=1)
-        f1, f2 = torch.split(features, [bsz, bsz], dim=0)
-        features = torch.cat([f1.unsqueeze(1), f2.unsqueeze(1)], dim=1)  # [bsz, n_view, c, img_size, img_size]
-        print(features.shape)
-        l1, l2 = torch.split(labels, [bsz, bsz], dim=0)
-        labels = torch.cat([l1.unsqueeze(1), l2.unsqueeze(1)], dim=1)
-        gpu_map = get_gpu_memory_map()
-        print("model inference time:", time.time() - inf_time)
-        gpu_map = get_gpu_memory_map()
-        loss_time = time.time()
-        loss = criterion(features, labels)
-        print("loss time:", time.time() - loss_time)
-        gpu_map = get_gpu_memory_map()
-        exit(0)
-        """
+        loss = criterion(features, labels) # superivsed setting
+        # loss = criterion(features) # unsupervised setting
 
         if loss.mean() == 0:
             continue

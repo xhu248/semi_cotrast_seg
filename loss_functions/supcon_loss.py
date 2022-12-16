@@ -185,78 +185,12 @@ class LocalConLoss(nn.Module):
                 return loss
 
             loss = self.supconloss(features, labels)
-            """
-            f1, f2 = torch.split(features, [1, 1], dim=1)
-            features = torch.cat([f1.squeeze(1), f2.squeeze(1)], dim=0)
-            l1, l2 = torch.split(labels, [1, 1], dim=1)
-            labels = torch.cat([l1.squeeze(1), l2.squeeze(1)], dim=0)
-            bsz = features.shape[0]
-            loss = []
-            for b in range(bsz):
-                # print("Iteration index:", idx, "Batch_size:", b)
-                for i in range(img_size):
-                    # print("before ith iteration, the consumption memory is:", torch.cuda.memory_allocated() / 1024**2)
-                    for j in range(img_size):
-                        x = features[b:b + 1, :, i:i + 1, j:j + 1]  # [c, 1, 1, 1]
-                        x_label = labels[b, i, j] + 1  # avoid cases when label=0
-                        if x_label == 1:  # ignore background
-                            continue
-                        cos_dst = F.conv2d(features, x)  # [2b, 1, 512, 512]
-                        cos_dst = torch.div(cos_dst.squeeze(dim=1), self.temp)
-                        self_contrast_dst = torch.div((x * x).sum(), self.temp)
 
-                        mask = labels + 1
-                        mask[mask != x_label] = 0
-                        mask = torch.div(mask, x_label)
-                        numerator = (mask * cos_dst).sum() - self_contrast_dst
-                        denominator = torch.exp(cos_dst).sum() - torch.exp(self_contrast_dst)
-                        # print("denominator:", denominator.item())
-                        # print("numerator:", numerator.max(), numerator.min())
-                        loss_tmp = torch.log(denominator) - numerator / (mask.sum() - 1)
-                        if loss_tmp != loss_tmp:
-                            print(numerator.item(), denominator.item())
-
-                        loss.append(loss_tmp)
-
-            if len(loss) == 0:
-                loss = torch.tensor(0).float().to(self.device)
-                return loss
-            loss = torch.stack(loss).mean()
-            """
             return loss
         else:
             bsz = features.shape[0]
             loss = self.supconloss(features)
 
-            """
-            loss = []
-            for b in range(bsz):
-                # print("Iteration index:", idx, "Batch_size:", b)
-                tmp_feature = features[b]
-                for n in range(tmp_feature.shape[0]):
-                    for i in range(img_size):
-                        # print("before ith iteration, the consumption memory is:", torch.cuda.memory_allocated() / 1024**2)
-                        for j in range(img_size):
-                            x = tmp_feature[n:n+1, :, i:i + 1, j:j + 1]  # [c, 1, 1, 1]
-                            cos_dst = F.conv2d(tmp_feature, x)  # [2b, 1, 512, 512]
-                            cos_dst = torch.div(cos_dst.squeeze(dim=1), self.temp)
-                            # print("cos_dst:", cos_dst.max(), cos_dst.min())
-                            self_contrast_dst = torch.div((x * x).sum(), self.temp)
-
-                            mask = torch.zeros((tmp_feature.shape[0], tmp_feature.shape[2], tmp_feature.shape[3]),
-                                               device=self.device)
-                            mask[0:tmp_feature.shape[0], i, j] = 1
-                            numerator = (mask * cos_dst).sum() - self_contrast_dst
-                            denominator = torch.exp(cos_dst).sum() - torch.exp(self_contrast_dst)
-                            # print("numerator:", numerator.max(), numerator.min())
-                            loss_tmp = torch.log(denominator) - numerator / (mask.sum() - 1)
-                            if loss_tmp != loss_tmp:
-                                print(numerator.item(), denominator.item())
-
-                            loss.append(loss_tmp)
-
-            loss = torch.stack(loss).mean()
-            """
             return loss
 
 
